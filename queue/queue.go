@@ -1,37 +1,35 @@
 // Package queue implements the Queue ADS with two Stacks
 package queue
 
-import (
-	"github.com/yhabib/csi/tree/main/modules/stack"
-)
+import "github.com/yhabib/go-modules/stack"
 
 // Queue data structure
 type Queue struct {
-	rearStack  stack.Stack
-	frontStack stack.Stack
+	rear  stack.Stack
+	front stack.Stack
 }
 
-// New is conustrctor of Queue
-func (q *Queue) New() {
-	q.items = make([]interface{}, 0)
+// Enqueue adds item to the rear of the queue
+func (q *Queue) Enqueue(item interface{}) {
+	q.rear.Push(item)
 }
 
-func (q *Queue) enqueue(item interface{}) {
-	tempQueue := []interface{}{item}
-	q.items = append(tempQueue, q.items...)
+// Dequeue removes and returns item from the front of the queue
+func (q *Queue) Dequeue() interface{} {
+	if q.front.IsEmpty() {
+		for q.rear.Size() > 0 {
+			q.front.Push(q.rear.Pop())
+		}
+	}
+	return q.front.Pop()
 }
 
-func (q *Queue) dequeue() interface{} {
-	length := len(q.items)
-	item := q.items[length-1]
-	q.items = q.items[:length-1]
-	return item
+// IsEmpty chceks the emptyness of the queue
+func (q *Queue) IsEmpty() bool {
+	return q.rear.IsEmpty() && q.front.IsEmpty()
 }
 
-func (q *Queue) isEmpty() bool {
-	return len(q.items) == 0
-}
-
-func (q *Queue) size() int {
-	return len(q.items)
+// Size returns size of the Queue
+func (q *Queue) Size() int {
+	return q.rear.Size() + q.front.Size()
 }
