@@ -1,2 +1,6 @@
-# go-modules
-Go modules to reuse
+# Modules
+
+Set of reusable pieces of code written in GO.
+
+* Stack
+* Queue
